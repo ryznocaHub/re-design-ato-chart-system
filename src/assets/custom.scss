@@ -1,0 +1,46 @@
+@import '~bootstrap/scss/bootstrap';
+/*@font-face {
+  font-family: yumin;
+  src: url('font/yumin.ttf');
+}*/
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+  font-size: 14px;
+}
+body {
+  overflow: hidden;
+}
+.form-control:focus {
+  box-shadow: 0 0 0 0.05rem rgba(0, 123, 255, 1);
+}
+.font-ss{
+    font-size: 10px;
+}
+.font-s{
+    font-size: 12px;
+}
+.font-l{
+    font-size: 20px;
+}
+
+.font-ll{
+    font-size: 24px;
+}
+
+.font-xl{
+    font-size: 28px;
+}
+.cur-p{
+    cursor: pointer;
+}
+
+
+/*
+@media (min-width: 992px) {
+  body {
+    font-size: 14px;
+  }
+}*/

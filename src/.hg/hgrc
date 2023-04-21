@@ -1,0 +1,11 @@
+[ui]
+username = Noriyasu Sano  <sano@107.co.jp>
+editor = vim
+merge=internal:merge
+
+ssh = ssh -i /home/jactare/.ssh/conoha2 -p 22360
+
+[paths]
+default  = ssh://sano@share.107.co.jp//home/mercurial/ato_map_front_src
+default-push  = ssh://sano@share.107.co.jp//home/mercurial/ato_map_front_src
+

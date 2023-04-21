@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="jp">
   <head>
+    <META HTTP-EQUIV="Access-Control-Allow-Origin: *">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="viewport-fit=cover, user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    
+    <title>配布自動見積</title>
   </head>
   <body>
     <noscript>
@@ -14,4 +20,89 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  <script>
+      let onPostMessage = function ( event ) {
+          //alert('ccc');
+
+          let origin = event.origin ;
+          if( origin !== "https://map-ato-customx.107.jp" ) return false ;
+
+          let message = event.data.message ;
+          if (message === "header_on") {
+              let headerTag = document.getElementById("page_header");
+              headerTag.style.display = "block";
+              let iframeTag = document.getElementById("iframe_header_off");
+              iframeTag.id = 'iframe_header_on';
+
+          }
+
+          if (message === "header_off") {
+              let headerTag = document.getElementById("page_header");
+              headerTag.style.display = "none";
+              let iframeTag = document.getElementById("iframe_header_on");
+              iframeTag.id = 'iframe_header_off';
+          }
+
+          if (message === "cart_push") {
+
+
+              window.location.href = 'cart';
+
+          }
+          if (message === "close_plan_update") {
+
+              window.location.href = 'cart';
+
+          }
+          if (message === "scroll_reset"){
+              //   alert('abdd');
+              window.scrollTo(0, 0);
+
+          }
+          if (message === "resize_reset"){
+              //alert('jjjj');
+              window.resizeTo(window.screen.width,window.screen.height);
+              window.scrollTo(0, 0);
+              // alert('mmmm');
+          }
+
+      }
+      const setParams = function(name, value){
+          const input = document.createElement('input');
+          input.setAttribute('type', 'hidden');
+          input.setAttribute('name', name);
+          input.setAttribute('value', value);
+          return input;
+      }
+      addEventListener( "message", onPostMessage );
+  </script>
 </html>
+
+<style scoped>
+    *{
+        margin: 0;
+        padding: 0;
+        border: 0;
+        overflow: hidden;
+    }
+
+    body{
+      overscroll-behavior-y: none;
+    }
+
+    #iframe_header_on {
+        border:none;
+        width:100%;
+        height:calc(100vh - 50px);
+        overflow: auto;
+    }
+
+
+    #iframe_header_off{
+        border:none;
+        width:100%;
+        height:100vh;
+        overflow: auto;
+    }
+
+</style>
