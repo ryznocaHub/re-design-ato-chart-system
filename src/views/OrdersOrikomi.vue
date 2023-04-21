@@ -41,7 +41,7 @@
       <button :class="device.mobile ? 'button-mobile' : 'button'" @click="searchAgain()">絞り込み</button>
     </div>
 
-    <div class="orders-container mt-5 ms-3 me-3">
+    <div :class="device.mobile ? 'orders-container-mobile' : 'orders-container'" class=" mt-5 ms-3 me-3">
     <div :class="device.mobile ? 'orders-header-mobile' : 'orders-header'">
       <div v-if="!device.mobile" class="header-item">注文日</div>
       <div class="header-item">註文番号</div>
@@ -368,12 +368,9 @@ $sec-color: #FFE6C7;
 .orders-container-mobile{
   @extend .orders-container;
   .orders-header-mobile{
-      // @extend .orders-header;
-
+      @extend .orders-header;
       font-size: 10px;
       .header-item{
-        background-color: red;
-      // width: calc(100% / 3);
       width: 100px;
     }
   }

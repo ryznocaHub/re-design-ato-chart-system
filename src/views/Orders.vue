@@ -284,6 +284,7 @@ $sec-color: #FFE6C7;
   @extend .search-wrap;
   flex-direction: column;
   div {
+    width: 100% ;
     margin-bottom: 10px;
   }
  }
@@ -331,6 +332,7 @@ $sec-color: #FFE6C7;
     padding-left: 15px;
     padding-right: 15px;
     .header-item{
+      // background-color: red;
       width: calc(100% / 8);
       font-size: 16px;
       text-align: left;
@@ -369,7 +371,7 @@ $sec-color: #FFE6C7;
       @extend .orders-header;
       font-size: 10px;
       .header-item{
-      width: calc(100% / 3);
+      width: 100px;
     }
   }
 }
