@@ -833,6 +833,61 @@ body{
   margin-top: 40px;
 }
 
+.destination_detail{
+  text-align: start;
+  .tracking-container{
+    padding-bottom: 20px;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .tracking-container-button{
+    // @extend .tracking-container;
+    align-self: self-end;
+    padding-bottom: 27px;
+  }
+  .tracking-input{
+    padding: 5px 10px;
+    border: 1px solid #EBEBEB;
+    border-radius: 5px;
+    background-color: #EBEBEB;
+    &:focus{
+      outline: none;
+      color: $base-color;
+      border: 1px solid $base-color;
+    }
+    &:hover{
+      outline: none;
+      color: $base-color;
+      border: 1px solid $base-color;
+    }
+  }
+  .icon{
+    font-size: 30px;
+    padding: 5px;
+    border-radius: 50%;
+    margin-right: 10px;
+    &:hover{
+      cursor: pointer;
+      background-color: white;
+    }
+  }
+  .green {
+    @extend .icon;
+    font-weight: 800;
+    background-color: #EEFFF3;
+    border: 1px solid #23A047;
+    color: #23A047;
+  }
+  .orange {
+    @extend .icon;
+    font-weight: 800;
+    background-color: rgb(255, 243, 227);
+    border: 1px solid $base-color;
+    color: $base-color;
+  }
+}
+
 .container-mobile{
   padding: 0px 20px;
   margin-top: 0px;
