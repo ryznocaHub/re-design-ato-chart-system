@@ -31,7 +31,7 @@
     </div>
 
     <div class="content-header">入稿データをアップロード<span class="font-es-s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;現在の入稿データファイル名 :</span><span id="file_name" class="font-es-s" ></span></div>
-    <div class="content-items">
+    <div :class="device.mobile ? 'content-items-mobile' : null" class="content-items ">
       <div class="items-spinner">
         <div id="file-upload-spinner" class="first-spinner"></div>
         <form>
