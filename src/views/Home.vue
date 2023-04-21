@@ -1,51 +1,53 @@
 <template>
     <Header msg=""/>
 
-  <div class="container mt-5">
-      <button v-show="getAuthLevel() > 2" :class="device.mobile ? 'add-account-mobile' : 'add-account'" @click="onClickAccountManage()"><img class="add-account-img" src="../assets/img/account_w_plus.png"/></button>
-      <div class="row main-portal-row">
-        <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
-        <div :class="device.mobile ? 'col-10' : 'col-4'">
-          <button class="main-portal-button w-100 h-100" @click="onClickMap">地図から見積を検討</button>
+    <div class="all-content">
+      <div class="container mt-5">
+          <button v-show="getAuthLevel() > 2" :class="device.mobile ? 'add-account-mobile' : 'add-account'" @click="onClickAccountManage()"><img class="add-account-img" src="../assets/img/account_w_plus.png"/></button>
+          <div class="row main-portal-row">
+            <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
+            <div :class="device.mobile ? 'col-10' : 'col-4'">
+              <button class="main-portal-button w-100 h-100" @click="onClickMap">地図から見積を検討</button>
+            </div>
+            <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
+          </div>
+    
+        <div class="row main-portal-row">
+          <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
+          <div :class="device.mobile ? 'col-10' : 'col-4'">
+            <button class="main-portal-button w-100 h-100" @click="onClickCart">カート、処理中の注文</button>
+          </div>
+          <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
         </div>
-        <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
+    
+          <div class="row main-portal-row">
+            <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
+            <div :class="device.mobile ? 'col-10' : 'col-4'">
+              <button class="main-portal-button w-100 h-100" @click="onClickOrders">ポスティング　注文の管理</button>
+            </div>
+            <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
+          </div>
+          <div class="row main-portal-row">
+            <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
+            <div :class="device.mobile ? 'col-10' : 'col-4'">
+              <button class="main-portal-button w-100 h-100" @click="onClickOrdersOrikomi">新聞オリコミ　注文の管理</button>
+            </div>
+            <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
+          </div>
+    
+    
+          <div class="row main-portal-row">
+            <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
+            <div :class="device.mobile ? 'col-10' : 'col-4'">
+              <button class="main-portal-button w-100 h-100" @click="onClickOrikomiMap">地図から新聞折込を検討</button>
+            </div>
+            <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
+          </div>
+           <div class="row main-portal-row"></div>
+    
+    
       </div>
-
-    <div class="row main-portal-row">
-      <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
-      <div :class="device.mobile ? 'col-10' : 'col-4'">
-        <button class="main-portal-button w-100 h-100" @click="onClickCart">カート、処理中の注文</button>
-      </div>
-      <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
     </div>
-
-      <div class="row main-portal-row">
-        <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
-        <div :class="device.mobile ? 'col-10' : 'col-4'">
-          <button class="main-portal-button w-100 h-100" @click="onClickOrders">ポスティング　注文の管理</button>
-        </div>
-        <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
-      </div>
-      <div class="row main-portal-row">
-        <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
-        <div :class="device.mobile ? 'col-10' : 'col-4'">
-          <button class="main-portal-button w-100 h-100" @click="onClickOrdersOrikomi">新聞オリコミ　注文の管理</button>
-        </div>
-        <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
-      </div>
-
-
-      <div class="row main-portal-row">
-        <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
-        <div :class="device.mobile ? 'col-10' : 'col-4'">
-          <button class="main-portal-button w-100 h-100" @click="onClickOrikomiMap">地図から新聞折込を検討</button>
-        </div>
-        <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
-      </div>
-       <div class="row main-portal-row"></div>
-
-
-  </div>
   <Footer/>
 </template>
 
@@ -134,8 +136,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
+body{
+  overflow-y: scroll !important;
+  overflow: scroll !important;
+}
+.all-content{
+  height: 90vh;
+  overflow: auto;
+  margin-bottom: 40px;
+}
 .container {
   position: relative;
+  overflow: auto;
   .add-account{
     position: absolute;
     top: 0px;

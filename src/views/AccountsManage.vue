@@ -1,53 +1,55 @@
 <template>
   <Header msg=""/>
 
-  <div class="container-wrap">
-    <h4 class="page-title">アカウントの管理</h4>
-    <div class="container-add">
-      <div>アカウント管理表</div>
-      <button class="add-account" @click="addBtn()">アカウントの追加</button>
-    </div>
-    <div class="container-content">
-      <b class="cell-wide">User_ID</b>
-      <b class="cell-wide">User_Name</b>
-      <b class="cell">Department</b>
-      <b class="cell">Authority</b>
-      <b class="cell"></b>
-    </div>
-    <div v-if="addingStatus() || this.adding" class="container-content">
-      <div id="user-id-add" class="cell-wide editable" placeholder="E-MAIL"  contenteditable></div>
-      <div id="user-name-add" class="cell-wide editable" placeholder="お名前" contenteditable></div>
-      <div id="department-add" class="cell editable" placeholder="部門" contenteditable></div>
-      <div class="cell" >
-        <select id="privilege-add">
-          <option value="1" selected>スタッフ</option>
-          <option value="2" >管理者</option>
-          <option value="3" >SuperAdmin</option>
-        </select>
+  <div class="all-content">
+    <div :class="device.mobile ? 'container-wrap-mobile' : 'container-wrap'">
+      <h4 class="page-title">アカウントの管理</h4>
+      <div class="container-add">
+        <div>アカウント管理表</div>
+        <button class="add-account" @click="addBtn()">アカウントの追加</button>
       </div>
-      <div class="cell button-container">
-        <BIconX @click="cancelAddBtn()"  class="icon red" />
-        <BIconCheck2 @click="addSaveBtn()" class="icon green" />
+      <div class="container-content"  :class="device.mobile ? 'container-content-mobile' : null">
+        <b class="cell-wide">User_ID</b>
+        <b class="cell-wide">User_Name</b>
+        <b class="cell">Department</b>
+        <b class="cell">Authority</b>
+        <b :class="device.mobile ? 'cell-wide' : 'cell'"></b>
       </div>
-    </div>
-    
-    <div :class="editingStatus(account.id) ? 'editing' : 'container-content'" v-for="(account, i) in getAccountList()" :key="i">
-      <div :id="getUserIdId(account.id)" class="cell-wide"  :contenteditable="editingStatus(account.id)">{{account.user_id}}</div>
-      <div :id="getUserNameId(account.id)" class="cell-wide" :contenteditable="editingStatus(account.id)">{{account.user_name}}</div>
-      <div :id="getDepartmentId(account.id)" class="cell" :contenteditable="editingStatus(account.id)">{{account.department}}</div>
-      <div class="cell" >
-        <select :id="getSelectedId(account.id)"  :disabled="!editingStatus(account.id)">
-          <option value="1" :selected="account.privilege === 1">スタッフ</option>
-          <option value="2" :selected="account.privilege === 2">管理者</option>
-          <option value="3" :selected="account.privilege === 3">SuperAdmin</option>
-        </select>
+      <div v-if="addingStatus() || this.adding" class="container-content" :class="device.mobile ? 'container-content-mobile' : null">
+        <div id="user-id-add" class="cell-wide editable" placeholder="E-MAIL"  contenteditable></div>
+        <div id="user-name-add" class="cell-wide editable" placeholder="お名前" contenteditable></div>
+        <div id="department-add" class="cell editable" placeholder="部門" contenteditable></div>
+        <div class="cell" >
+          <select id="privilege-add">
+            <option value="1" selected>スタッフ</option>
+            <option value="2" >管理者</option>
+            <option value="3" >SuperAdmin</option>
+          </select>
+        </div>
+        <div :class="device.mobile ? 'cell-wide' : 'cell'" class="button-container">
+          <BIconX @click="cancelAddBtn()"  class="icon red" />
+          <BIconCheck2 @click="addSaveBtn()" class="icon green" />
+        </div>
       </div>
-      <div class="cell button-container">
-        <button @click="deleteBtn(account.id)" :class="editingStatus(account.id) ? 'not-show' : 'not-show'">{{account.etc1}}</button>
-        <BIconTrash @click="deleteBtn(account.id)" :class="editingStatus(account.id) ? null : 'not-show'"  class="icon orange" />
-        <BIconX @click="cancelBtn(account.id)" :class="editingStatus(account.id) ? null : 'not-show'"  class="icon red" />
-        <BIconCheck2 v-if="editingStatus(account.id)" @click="saveBtn(account.id)" class="icon green" />
-        <span v-if="!editingStatus(account.id)" class="icon white" @click="editBtn(account.id)"><BIconPencil/></span> 
+      
+      <div :class="[editingStatus(account.id) ? 'editing' : 'container-content',device.mobile ? 'container-content-mobile' : null]"  v-for="(account, i) in getAccountList()" :key="i">
+        <div :id="getUserIdId(account.id)" class="cell-wide"  :contenteditable="editingStatus(account.id)">{{account.user_id}}</div>
+        <div :id="getUserNameId(account.id)" class="cell-wide" :contenteditable="editingStatus(account.id)">{{account.user_name}}</div>
+        <div :id="getDepartmentId(account.id)" class="cell" :contenteditable="editingStatus(account.id)">{{account.department}}</div>
+        <div class="cell" >
+          <select :id="getSelectedId(account.id)"  :disabled="!editingStatus(account.id)">
+            <option value="1" :selected="account.privilege === 1">スタッフ</option>
+            <option value="2" :selected="account.privilege === 2">管理者</option>
+            <option value="3" :selected="account.privilege === 3">SuperAdmin</option>
+          </select>
+        </div>
+        <div :class="device.mobile ? 'cell-wide' : 'cell'" class="button-container">
+          <button @click="deleteBtn(account.id)" :class="editingStatus(account.id) ? 'not-show' : 'not-show'">{{account.etc1}}</button>
+          <span v-if="editingStatus(account.id)" @click="saveBtn(account.id)" class="icon green"><BIconCheck2  /></span>
+          <span @click="cancelBtn(account.id)" :class="editingStatus(account.id) ? null : 'not-show'"  class="icon red" ><BIconX /></span>
+          <span @click="deleteBtn(account.id)" :class="editingStatus(account.id) ? null : 'not-show'"  class="icon white"><BIconTrash/></span>
+          <span v-if="!editingStatus(account.id)" class="icon white" @click="editBtn(account.id)"><BIconPencil/></span> 
+        </div>
       </div>
     </div>
   </div>
@@ -69,7 +71,8 @@ import {functionStore} from "../store/function-store";
 import {DialogFrameStateStore} from "../components/dialog-frame-state-store";
 import DeleteAccountConfirmDialog from "../components/DeleteAccountConfirmDialog";
 import {BIconCheck2, BIconX, BIconTrash, BIconPencil} from "bootstrap-icons-vue"
-
+import { createDeviceDetector } from "next-vue-device-detector";
+const device = createDeviceDetector()
 //import {allMenuStore} from "../store/all-menu-store";
 
 let editingId = -1;
@@ -99,6 +102,7 @@ export default {
       deleteAccountConfirmDialogStateStore: new DialogFrameStateStore(),
       delteAccount: {},
       functionStore,
+      device
     }
   },
   async beforeMount(){
@@ -320,12 +324,25 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 $base-color: #FF8C00;
 $sec-color: #FFE6C7;
+
+.all-content{
+  height: 90vh;
+  overflow: auto;
+  margin-bottom: 40px;
+}
 .container-wrap{
   text-align: start;
-  padding: 10px 100px;
+  padding: 10px 20%;
   margin-bottom: 50px;
+  overflow: auto;
+}
+
+.container-wrap-mobile{
+  @extend .container-wrap;
+  padding: 10px 3%;
 }
 
 .page-title{
@@ -360,6 +377,44 @@ $sec-color: #FFE6C7;
 .button-container{
   display: flex;
   justify-content: end;
+  .icon{
+      font-size: 15px;
+      padding: 3px 6px;
+      border-radius: 50%;
+      
+      &:hover{
+        cursor: pointer;
+        background-color: white;
+      }
+    }
+    .green {
+      @extend .icon;
+      background-color: #EEFFF3;
+      border: 1px solid #23A047;
+      color: #23A047;
+    }
+    .red {
+      @extend .icon;
+      background-color: #FFE9E9;
+      border: 1px solid #CD0000;
+      color: #CD0000;
+    }
+    .orange {
+      @extend .icon;
+      background-color: rgb(255, 243, 227);
+      border: 1px solid $base-color;
+      color: $base-color;
+    }
+    .white {
+      @extend .icon;
+      padding: 3px 6px;
+      background-color: white;
+      border: 1px solid $base-color;
+      color: $base-color;
+      &:hover {
+        background-color: #fff4dc;
+      }
+    }
 }
 
 .button-container > * {
@@ -369,12 +424,18 @@ $sec-color: #FFE6C7;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  // flex-wrap: ;
   width: 100%;
   padding: 5px 20px;
   background-color: white;
   .cell{
     border-radius: 5px;
-    width: 13%;
+    width: 15%;
+    font-size: 12px;
+    padding-right: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     button {
       background-color: $base-color;
       border-radius: 5px;
@@ -392,52 +453,10 @@ $sec-color: #FFE6C7;
       width: 200px;
     }
 
-    .icon{
-      font-size: 30px;
-      padding: 5px;
-      border-radius: 50%;
-      
-      &:hover{
-        cursor: pointer;
-        background-color: white;
-      }
-    }
-    .green {
-      @extend .icon;
-      font-weight: 800;
-      background-color: #EEFFF3;
-      border: 1px solid #23A047;
-      color: #23A047;
-    }
-    .red {
-      @extend .icon;
-      font-weight: 800;
-      background-color: #FFE9E9;
-      border: 1px solid #CD0000;
-      color: #CD0000;
-    }
-    .orange {
-      @extend .icon;
-      font-weight: 800;
-      background-color: rgb(255, 243, 227);
-      border: 1px solid $base-color;
-      color: $base-color;
-    }
-    .white {
-      @extend .icon;
-      // font-weight: 800;
-      font-size: 15px;
-      padding: 3px 6px;
-      background-color: white;
-      border: 1px solid $base-color;
-      color: $base-color;
-      &:hover {
-        background-color: #fff4dc;
-      }
-    }
+    
   }
   .cell-wide{
-    border-radius: 5px;
+    @extend .cell;
     width: 25%;
   }
   .odd{
@@ -465,8 +484,11 @@ $sec-color: #FFE6C7;
     }
   }
 }
+.container-content-mobile{
+  width: 150%;
+}
 .editing{
-  @extend .container-content;
+  @extend .container-content; 
   [contenteditable]{
     padding: 5px;
     border: 1px solid lightgray;

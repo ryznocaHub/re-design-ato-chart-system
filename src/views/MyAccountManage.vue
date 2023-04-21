@@ -2,61 +2,63 @@
   <Header msg=""/>
   <h4 class="page-title">マイアカウントの管理</h4>
 
-  <div :class="editingStatus() ? 'editing' : 'container-wrap'">
-    <div class="container-header">
-      <div class="header">ユーザー名、所属の編集</div>
-      <div class="container-button">
-        <button v-if="editingStatus()" class="button-secondary" @click="cancelBtn()" >キャンセル</button>
-        <button v-if="editingStatus()" class="button-primary" @click="saveMyAccountInfo()">保存</button>
-        <button v-if="!editingStatus()" class="button-secondary" @click="editBtn()">編集</button>
+  <div class="all-content">
+    <div :class="editingStatus() ? 'editing' : 'container-wrap'">
+      <div class="container-header">
+        <div class="header">ユーザー名、所属の編集</div>
+        <div class="container-button">
+          <button v-if="editingStatus()" class="button-secondary" @click="cancelBtn()" >キャンセル</button>
+          <button v-if="editingStatus()" class="button-primary" @click="saveMyAccountInfo()">保存</button>
+          <button v-if="!editingStatus()" class="button-secondary" @click="editBtn()">編集</button>
+        </div>
       </div>
-    </div>
-
-    <div class="label">User_name</div>
-    <div id="user-id" class="item" >{{myAccount().user_id}}</div>
-
-    <div class="label">User_ID</div>
-    <div id="user-name" class="item" :contenteditable="editingStatus()">{{myAccount().user_name}}</div>
-
-    <div class="label">Department</div>
-    <div id="department" class="item" :contenteditable="editingStatus()">{{myAccount().department}}</div>
-
-    <div class="label">Authority</div>
-    <div class="item" >
-      <select id="privilege-selecter"  :disabled="true">
-        <option value="1" :selected="myAccount().privilege === 1">スタッフ</option>
-        <option value="2" :selected="myAccount().privilege === 2">管理者</option>
-        <option value="3" :selected="myAccount().privilege === 3">SuperAdmin</option>
-      </select>
-    </div>
-    
-  </div>
-
-  <div :class="editingAddressStatus() ? 'editing' : 'container-wrap'">
-    <div class="container-header">
-      <div class="header">マップアクセス時の初期表示アドレスの編集</div>
-      <div class="container-button">
-        <button v-if="editingAddressStatus()" class="button-secondary" @click="cancelAddressBtn()">キャンセル</button>
-        <button v-if="editingAddressStatus()" class="button-primary" @click="saveMyAccountFirstAddress()">保存</button>
-        <button v-if="!editingAddressStatus()" class="button-secondary" @click="editAddressBtn()">編集</button>
+  
+      <div class="label">User_name</div>
+      <div id="user-id" class="item" >{{myAccount().user_id}}</div>
+  
+      <div class="label">User_ID</div>
+      <div id="user-name" class="item" :contenteditable="editingStatus()">{{myAccount().user_name}}</div>
+  
+      <div class="label">Department</div>
+      <div id="department" class="item" :contenteditable="editingStatus()">{{myAccount().department}}</div>
+  
+      <div class="label">Authority</div>
+      <div class="item" >
+        <select id="privilege-selecter"  :disabled="true">
+          <option value="1" :selected="myAccount().privilege === 1">スタッフ</option>
+          <option value="2" :selected="myAccount().privilege === 2">管理者</option>
+          <option value="3" :selected="myAccount().privilege === 3">SuperAdmin</option>
+        </select>
       </div>
+      
     </div>
-    <div id="first-address" class="item" :contenteditable="editingAddressStatus()">{{myAccountAddress()}}</div>
-  </div>
-
-  <div :class="editingPasswordStatus() ? 'editing' : 'container-wrap'">
-    <div class="container-header">
-      <div class="header">パスワードの変更</div>
-      <div class="container-button">
-        <button v-if="editingPasswordStatus()" class="button-secondary" @click="cancelPasswordBtn()" >キャンセル</button>
-        <button v-if="editingPasswordStatus()" class="button-primary" @click="renewMyAccountPassword()">保存</button>
-        <button v-if="!editingPasswordStatus()" class="button-secondary" @click="editPasswordBtn()">変更</button>
+  
+    <div :class="editingAddressStatus() ? 'editing' : 'container-wrap'">
+      <div class="container-header">
+        <div class="header">マップアクセス時の初期表示アドレスの編集</div>
+        <div class="container-button">
+          <button v-if="editingAddressStatus()" class="button-secondary" @click="cancelAddressBtn()">キャンセル</button>
+          <button v-if="editingAddressStatus()" class="button-primary" @click="saveMyAccountFirstAddress()">保存</button>
+          <button v-if="!editingAddressStatus()" class="button-secondary" @click="editAddressBtn()">編集</button>
+        </div>
       </div>
+      <div id="first-address" class="item" :contenteditable="editingAddressStatus()">{{myAccountAddress()}}</div>
     </div>
-
-    <div id="password1" class="item" :contenteditable="editingPasswordStatus()">*******</div>
-    <div id="password2" class="item" :contenteditable="editingPasswordStatus()">*******</div>
-    
+  
+    <div :class="editingPasswordStatus() ? 'editing' : 'container-wrap'">
+      <div class="container-header">
+        <div class="header">パスワードの変更</div>
+        <div class="container-button">
+          <button v-if="editingPasswordStatus()" class="button-secondary" @click="cancelPasswordBtn()" >キャンセル</button>
+          <button v-if="editingPasswordStatus()" class="button-primary" @click="renewMyAccountPassword()">保存</button>
+          <button v-if="!editingPasswordStatus()" class="button-secondary" @click="editPasswordBtn()">変更</button>
+        </div>
+      </div>
+  
+      <div id="password1" class="item" :contenteditable="editingPasswordStatus()">*******</div>
+      <div id="password2" class="item" :contenteditable="editingPasswordStatus()">*******</div>
+      
+    </div>
   </div>
 
   <Footer/>
@@ -245,6 +247,11 @@ function genericAlertOpen(title,message){
 </script>
 
 <style scoped lang="scss">
+.all-content{
+  height: 90vh;
+  overflow: auto;
+  padding-bottom: 150px;
+}
 $base-color: #FF8C00;
 $sec-color: #FFE6C7;
 .page-title{
@@ -283,6 +290,7 @@ select {
         padding: 5px 10px;
         margin-left: 20px;
         border-radius: 5px;
+        white-space: nowrap;
         &:hover{
           background-color: $sec-color;
         }
