@@ -4,7 +4,6 @@
   <OrikomiStatusTimeLine/>
 
   <div class="mt-5" :class="device.mobile ? 'container-mobile' : 'container'">
-
     <h4 class="page-title">オーダー/詳細</h4>
 
     <div class="button-container"><button class="button" @click="goMapToReorder()">この註文情報を用いて再注文</button></div>
@@ -709,9 +708,11 @@ body{
 .page-title {
   font-weight: 900;
   margin-top: 20px;
+  white-space: nowrap;
 }
 
 .page-title-mobile{
+  white-space: nowrap;
   font-weight: 900;
   font-weight: 900;
   font-size: 20px;

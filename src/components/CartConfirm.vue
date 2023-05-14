@@ -106,7 +106,7 @@
 　　<!--　ここはオリコミのための記載 -->
     <div class="cart-group-wrap-header"  v-if="planArray[0].data_type == 'orikomi'">
       <div>
-        <b class="order-group-id"> 註文GrID:{{planArray[0].extra.group_id}} 作成:{{planArray[0].extra.user_name}}</b>
+        <b class="order-group-id">Orikomi 註文GrID:{{planArray[0].extra.group_id}} 作成:{{planArray[0].extra.user_name}}</b>
         <div class="plan-created-at">カート投入日時:{{planArray[0].created_at}}</div>
       </div>
       <button v-if="! authorizeStatus(planArray[0])" class="authorized-check-btn" @click="startAuthorizedProcess(planArray[0].extra.group_id,'orikomi')">:未承認</button>
@@ -171,12 +171,13 @@
               <b class="title">配布エリア詳細</b>
               <div class="space"></div>
               <div v-for="(item,j) in plan.estimation.items" :key="j">
-              <div  v-for="(store, k) in item.sales_stores" :key="k">
-                <div  v-if="store.quantity > 0" class="product-row">
-                  <div class="left-col" >{{store.store_name}}</div><div class="right-col">{{store.quantity.toLocaleString()}}部</div>
+                <div  v-for="(store, k) in item.sales_stores" :key="k">
+                  <div  v-if="store.quantity > 0" class="product-row">
+                    <div class="left-col" >{{store.store_name}}</div>
+                    <div class="right-col">{{store.quantity.toLocaleString()}}部</div>
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
           </div>
         </details>

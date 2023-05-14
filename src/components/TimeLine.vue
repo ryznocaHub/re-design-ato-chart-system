@@ -2,11 +2,11 @@
   <div class="timeline-block">
   <ul :class="device.mobile ? 'timeline-mobile' : 'timeline'">
     <li :class="[{'active': this.cartStore.getters.cartStatus <= 1},{'until-active': this.cartStore.getters.cartStatus >= 2}, {'process': this.cartStore.getters.cartStatus >= 3}]" @click="this.cartStore.commit('updateCartStatus',1)"><span><b class="number">01</b>カート</span></li>
-    <li :class="[{'active': this.cartStore.getters.cartStatus == 2},{'until-active': this.cartStore.getters.cartStatus >= 3}, {'process': this.cartStore.getters.cartStatus >= 4}]" @click="this.cartStore.commit('updateCartStatus',2)"><span><b class="number">02</b>{{device.mobile ? '支払方法' : 'お支払い方法確認'}}</span></li>
-    <li :class="[{'active': this.cartStore.getters.cartStatus == 3},{'until-active': this.cartStore.getters.cartStatus >= 4}, {'process': this.cartStore.getters.cartStatus >= 5}]" @click="this.cartStore.commit('updateCartStatus',3)"><span><b class="number">03</b>{{device.mobile ? '内容確認' : 'ご購入内容の確認'}}</span></li>
-    <li :class="[{'active': this.cartStore.getters.cartStatus == 4},{'until-active': this.cartStore.getters.cartStatus >= 5}, {'process': this.cartStore.getters.cartStatus >= 6}]" @click="this.cartStore.commit('updateCartStatus',4)"><span><b class="number">04</b>配布物確認<div v-if="this.cartStore.getters.uploadCount > 0"  class="maru" ><p class="v-center" v-text="this.cartStore.getters.uploadCount" ></p></div></span></li>
-    <li :class="[{'active': this.cartStore.getters.cartStatus == 5},{'until-active': this.cartStore.getters.cartStatus >= 6}, {'process': this.cartStore.getters.cartStatus >= 7}]" @click="this.cartStore.commit('updateCartStatus',5)"><span><b class="number">05</b>配布物の納品<div v-if="this.cartStore.getters.shippingCount > 0" class="maru"><p class="v-center" v-text="this.cartStore.getters.shippingCount"></p></div></span></li>
-    <li :class="[{'active': this.cartStore.getters.cartStatus == 6},{'until-active': this.cartStore.getters.cartStatus >= 7}]" @click="this.cartStore.commit('updateCartStatus',6)"><span><b class="number">06</b>支払方法</span></li>
+    <!-- <li :class="[{'active': this.cartStore.getters.cartStatus == 2},{'until-active': this.cartStore.getters.cartStatus >= 3}, {'process': this.cartStore.getters.cartStatus >= 4}]" @click="this.cartStore.commit('updateCartStatus',2)"><span><b class="number">02</b>{{device.mobile ? '支払方法' : 'お支払い方法確認'}}</span></li> -->
+    <li :class="[{'active': this.cartStore.getters.cartStatus == 2},{'until-active': this.cartStore.getters.cartStatus >= 3}, {'process': this.cartStore.getters.cartStatus >= 4}]" @click="this.cartStore.commit('updateCartStatus',2)"><span><b class="number">02</b>{{device.mobile ? '内容確認' : 'ご購入内容の確認'}}</span></li>
+    <li :class="[{'active': this.cartStore.getters.cartStatus == 3},{'until-active': this.cartStore.getters.cartStatus >= 4}, {'process': this.cartStore.getters.cartStatus >= 5}]" @click="this.cartStore.commit('updateCartStatus',3)"><span><b class="number">03</b>配布物確認<div v-if="this.cartStore.getters.uploadCount > 0"  class="maru" ><p class="v-center" v-text="this.cartStore.getters.uploadCount" ></p></div></span></li>
+    <li :class="[{'active': this.cartStore.getters.cartStatus == 4},{'until-active': this.cartStore.getters.cartStatus >= 5}, {'process': this.cartStore.getters.cartStatus >= 6}]" @click="this.cartStore.commit('updateCartStatus',4)"><span><b class="number">04</b>配布物の納品<div v-if="this.cartStore.getters.shippingCount > 0" class="maru"><p class="v-center" v-text="this.cartStore.getters.shippingCount"></p></div></span></li>
+    <!-- <li :class="[{'active': this.cartStore.getters.cartStatus == 6},{'until-active': this.cartStore.getters.cartStatus >= 7}]" @click="this.cartStore.commit('updateCartStatus',6)"><span><b class="number">06</b>支払方法</span></li> -->
   </ul>
   </div>
 </template>
@@ -63,7 +63,7 @@ $timeline-width : 1200px;
 .timeline li {
   float: left;
   text-align: center;
-  width: $timeline-width / 6;
+  width: calc($timeline-width / 4);
   // background: greenyellow;
   // color: $base-color;
   position: relative;
@@ -122,14 +122,14 @@ $timeline-width : 1200px;
 .timeline li:after {
 
   content: '';
-  width: 180px;
+  width: 280px;
   height: 2px;
   background: #EDC594;
   /*background: #8cc413;*/
   display: block;
   position: absolute;
   top: 17.5px;
-  right: -90px;  /*これをマイナス値にしてコントロールしたかったがなぜか動作せず断念　右側がきれる、　leftでいれても同じ*/
+  right: -140px;  /*これをマイナス値にしてコントロールしたかったがなぜか動作せず断念　右側がきれる、　leftでいれても同じ*/
   z-index: -1;
   overflow: visible;
 }

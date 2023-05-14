@@ -43,7 +43,6 @@
             </div>
             <div :class="device.mobile ? 'col-1' : 'col-4'"></div>
           </div>
-           <div class="row main-portal-row"></div>
     
     
       </div>
@@ -143,7 +142,7 @@ body{
 .all-content{
   height: 90vh;
   overflow: auto;
-  margin-bottom: 40px;
+  padding-bottom: 40px;
 }
 .container {
   position: relative;

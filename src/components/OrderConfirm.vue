@@ -1,8 +1,16 @@
 <template>
+  <div class="note" v-if="!isRegistered">
+    <div class="title">メモ:</div>
+    <div>お支払いの前に、お客様の情報が正しいかどうかご確認ください。</div>
+    <div >
+      <div>クレジットカードの登録がまだのようですが、こちらから登録してください。</div>
+      <button class="button-register" @click="isRegistered = true">ここに登録</button>
+    </div>
+  </div>
   <h2 class="cart-title">ご注文内容の確認と確定</h2>
   <!-- <div v-if="getPlans().length <= 0" class="cart-empty-container"><p class="empty-explanation">カートに商品が入っていません。地図から見積を検討できます。<a href="javascript:void(0)" @click="goToMap()">見積はここから。</a></p></div> -->
-  <div class="all-cart-wrap">
-    <div class="cart-group-wrap-out" v-for="(planArray,j) in getPlans2d()" :key="j">
+  <div class="container-scroll">
+    <div class="" v-for="(planArray,j) in getPlans2d()" :key="j">
 
       <!--　ここはポスティングのための記載 -->
 
@@ -158,6 +166,7 @@ export default {
       functionStore,
       authStore,
       device,
+      isRegistered : false,
     }
   },
   methods:{
@@ -320,6 +329,64 @@ $sec-color: #FFE6C7;
   .space{
       height: 10px;
     }
+
+  .container-scroll{
+    max-height: 70vh;
+    overflow: auto;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .container-scroll::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+  }
+
+  .note {
+    text-align: left;
+    background: white;
+    color: #CD0000;
+    margin-bottom: 40px;
+    margin-left: 50px;
+
+    .title {
+      font-size: 16px;
+      font-weight: 800;
+    }
+    .button-register{
+      padding: 10px 20px;
+      border: 1px solid $base-color;
+      color: $base-color;
+      background: white;
+      font-weight: 900;
+      // border: 1px solid #777777;
+      border-radius: 5px;
+      font-size: 14px;
+      right: 20px;
+      margin-top: 20px;
+      span {
+        margin: auto;
+      }
+      img {
+        position: absolute;
+        right: 7px;
+        top: 7px;
+        width: 20px;
+        height: 13px;
+      }
+      &:hover {
+        background-color: $sec-color;
+        color: $base-color;
+        cursor: pointer;
+      }
+      &:disabled {
+        background-color: #FFE6C7;
+        cursor: not-allowed;
+        &:hover{
+          color: white;
+        }
+      }
+    }
+  }
   .icon-circle{
     border: 1px solid $base-color;
     background: white;
@@ -338,7 +405,7 @@ $sec-color: #FFE6C7;
     margin-bottom: 5px;
   }
 
-  .tes-cart-group-wrap-out {
+  .tes- {
     text-align: left;
     padding: 0px;
     margin: 0px;

@@ -4,24 +4,24 @@
   <div class="container mt-5">
 
     <CartConfirm v-if="currentStatus() == 1"/>
-    <PaymentConfirm v-if="currentStatus() == 2"/>
-    <OrderConfirm v-if="currentStatus() == 3"/>
-    <DataUpload v-if="currentStatus() == 4"/>
-    <ShippingConfirm v-if="currentStatus() >= 5"/>
+    <!-- <PaymentConfirm v-if="currentStatus() == 2"/> -->
+    <OrderConfirm v-if="currentStatus() == 2"/>
+    <!-- <CreditCardUi v-if="currentStatus() == 3"/> -->
+    <DataUpload v-if="currentStatus() == 3"/>
+    <ShippingConfirm v-if="currentStatus() == 4"/>
 
     <div class="ui-row">
       <button v-if="currentStatus()==1" :class="device.mobile? 'ui-back-button-mobile': 'ui-back-button'" @click="changeStatus(0)"><span>地図で註文を続ける</span></button>
       <button v-if="currentStatus()==1" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="changeStatus(2)" :disabled="isDisabled()"><span>お支払い方法確認へ進む</span></button>
       <button v-if="currentStatus()==2" :class="device.mobile? 'ui-back-button-mobile': 'ui-back-button'" @click="changeStatus(1)"><span>戻る</span></button>
-      <button v-if="currentStatus()==2" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="changeStatus(3)" :disabled="isDisabled()"><span>次に進む</span></button>
+      <button v-if="currentStatus()==2" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="onClickOrderConfirm()" :disabled="isDisabled()"><span>次に進む</span></button>
       <button v-if="currentStatus()==3" :class="device.mobile? 'ui-back-button-mobile': 'ui-back-button'" @click="changeStatus(2)"><span>戻る</span></button>
-      <button v-if="currentStatus()==3" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="onClickOrderConfirm" :disabled="isDisabled()"><span>注文の確定</span></button>
+      <button v-if="currentStatus()==3" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="changeStatus(4)" :disabled="isDisabled()"><span>注文の確定</span></button>
       <button v-if="currentStatus()==4" :class="device.mobile? 'ui-back-button-mobile': 'ui-back-button'" @click="changeStatus(3)"><span>戻る</span></button>
       <button v-if="currentStatus()==4" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="changeStatus(5)"><span>次に進む</span></button>
-      <button v-if="currentStatus()>=5" :class="device.mobile? 'ui-back-button-mobile': 'ui-back-button'" @click="changeStatus(4)"><span>戻る</span></button>
-      <button v-if="currentStatus()>=5" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="changeStatus(6)"><span>商品詳細画面へ</span></button>
-    <!--  <div v-if="currentStatus==6" class="ui-back-button" @click="changeStatus(5)"><span>戻る</span></div>
-      <div v-if="currentStatus==6" class="ui-button" @click="changeStatus(6)"><span>商品詳細画面へ</span></div> -->
+      <button v-if="currentStatus()==5" :class="device.mobile? 'ui-back-button-mobile': 'ui-back-button'" @click="changeStatus(4)"><span>戻る</span></button>
+      <button v-if="currentStatus()==5" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="changeStatus(6)"><span>商品詳細画面へ</span></button>
+     
     </div>
   </div>
   <DisclaimerDialog :disclaimer-dialog-state-store="disclaimerDialogStateStore"
@@ -41,13 +41,14 @@ import {allMenuStore} from "@/store/all-menu-store";
 import {cartStore} from "@/store/cart-store.js";
 import {orderStore} from "@/store/order-store.js"
 import {authStore} from "@/store/auth-store";
-import Footer from "../components/Footer";
-import {DialogFrameStateStore} from "../components/dialog-frame-state-store";
-import DisclaimerDialog from "../components/DisclaimerDialog";
-import {functionStore} from "../store/function-store";
-import {mapModeStore} from "../store/map-mode-store";
+import Footer from "@/components/Footer";
+import {DialogFrameStateStore} from "@/components/dialog-frame-state-store";
+import DisclaimerDialog from "@/components/DisclaimerDialog";
+import {functionStore} from "@/store/function-store";
+import {mapModeStore} from "@/store/map-mode-store";
 import { createDeviceDetector } from "next-vue-device-detector";
 import {dataTypeKeys, slashedDateFormat} from "@/utils/consts";
+import CreditCardUi from '@/components/CreditCardUi.vue';
 const device = createDeviceDetector()
 
 //let currentStatus = 1
@@ -64,8 +65,8 @@ export default {
     ShippingConfirm,
     Footer,
     DisclaimerDialog,
-
-  },
+    CreditCardUi
+},
   data(){
     return {
       authStore,
@@ -250,6 +251,7 @@ export default {
     },
     isDisabled(){
       if(this.currentStatus() < 4 && this.cartStore.getters.cartCount == 0 ){
+        console.log("isDisabled true1 ")
         return true;
       }
 
@@ -392,6 +394,13 @@ body{
        color: $base-color;
        cursor: pointer;
      }
+     &:disabled {
+      background-color: #FFE6C7;
+      cursor: not-allowed;
+      &:hover{
+        color: white;
+      }
+    }
   }
 
   .ui-back-button{

@@ -12,7 +12,6 @@ const allMenuStore = new Vuex.Store({
     },
     getters:{
         findPaperSizeJName: (state) => (name) => {
-            console.log(state.allMenuList.paper_sizes)
             for(let i = 0; i < state.allMenuList.paper_sizes.options.length;i++){
                 if(state.allMenuList.paper_sizes.options[i].name == name){
                     return state.allMenuList.paper_sizes.options[i].name_j;
@@ -21,7 +20,6 @@ const allMenuStore = new Vuex.Store({
             return "";
         },
         findMethodsJName: (state) => (name) => {
-            console.log(state.allMenuList.methods.options)
             for(let i = 0; i < state.allMenuList.methods.options.length;i++){
                 if (state.allMenuList.methods.options[i].name === name){
                     return state.allMenuList.methods.options[i].name_j;
