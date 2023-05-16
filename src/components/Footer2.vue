@@ -21,6 +21,23 @@
         </div>
       </div>
     </div>
+    <div class="modal" id="generic_alert">
+      <a href="javascript:void(0)" class="modal-overlay" aria-label="Close" @click="genericModalClose()"></a>
+      <div class="modal-container">
+        <div class="modal-body">
+          <div class="content">
+            <img class="img-modal" alt="image modal" src="../assets/img/Confirmation.png" >
+            <div><b id="generic_alert_title"></b></div>
+            <p id="generic_alert_message" lang="ja"></p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <section  id="generic_modal_with_args_footer"  class="columns">
+            <div  class="modal_footer column col-12"><button class="modal-confirm-btn" @click="modalOkExecute()">確定する</button><button class="modal-cancel-btn" @click="genericModalClose()">キャンセル</button></div>
+          </section>
+        </div>
+      </div>
+    </div>
   </template>
   
   <script>
@@ -40,12 +57,8 @@
       }
     },
     methods:{
-      genericAlertClose(){
-        let modalEle = document.getElementById("generic_alert");
-        modalEle.classList.remove("active");
-      },
       genericModalClose(){
-        let modalEle = document.getElementById("generic_modal_confirm");
+        let modalEle = document.getElementById("generic_alert");
         modalEle.classList.remove("active");
       },
       modalOkExecute(){

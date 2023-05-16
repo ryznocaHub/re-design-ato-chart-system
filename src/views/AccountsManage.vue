@@ -27,8 +27,8 @@
           </select>
         </div>
         <div :class="device.mobile ? 'cell-wide' : 'cell'" class="button-container">
-          <BIconX @click="cancelAddBtn()"  class="icon red" />
-          <BIconCheck2 @click="addSaveBtn()" class="icon green" />
+          <span @click="cancelAddBtn()" class="icon red"><BIconX  /></span>
+          <span @click="addSaveBtn()" class="icon green"><BIconCheck2  /></span>
         </div>
       </div>
       
@@ -194,7 +194,6 @@ export default {
       }
 
       this.initStatus()
-
       if(respData.result === "success"){
         this.genericAlertOpen("アカウントの追加","初期パスワードは:  " + respData.value + " " + "に設定されました。（一度しか表示されません。）" )
       }else{
