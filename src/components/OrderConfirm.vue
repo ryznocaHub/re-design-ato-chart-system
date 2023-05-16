@@ -1,15 +1,53 @@
 <template>
-  <div class="note" v-if="!isRegistered">
-    <div class="title">メモ:</div>
-    <div>お支払いの前に、お客様の情報が正しいかどうかご確認ください。</div>
-    <div >
-      <div>クレジットカードの登録がまだのようですが、こちらから登録してください。</div>
-      <button class="button-register" @click="isRegistered = true">ここに登録</button>
+  <div class="top-container">
+    <div class="note" v-if="!isRegistered">
+      <div class="title-note">メモ:</div>
+      <div>お支払いの前に、お客様の情報が正しいかどうかご確認ください。</div>
+      <div >
+        <div>クレジットカードの登録がまだのようですが、こちらから登録してください。</div>
+        <button class="button-register" @click="isRegistered = true">カード登録はこちらから</button>
+      </div>
+    </div>
+    <div class="note" v-else>
+      <div class="title-note">メモ:</div>
+      <div>お支払いの前に、お客様の情報が正しいかどうかご確認ください。</div>
+      <div >
+        <div>375987000000088 (AMEX)</div>
+        <button class="button-register" @click="isRegistered = false">カード編集はこちらから</button>
+      </div>
+    </div>
+    
+    <div>
+      <div class="title-payment">支払方法:</div>
+      <div class="button-container">
+        <button class="flex-button" :class="[radioButton == 'credit_card' ? 'active' : null ]" @click="() => radioButton = 'credit_card'">
+          <img src="../assets/img/creditCard.png" class="img-button">
+          <label >クレジットカード</label>
+        </button>
+        <button class="flex-button" :class="[radioButton == 'invoice' ? 'active' : null ]" @click="() => radioButton = 'invoice'">
+          <img src="../assets/img/invoice.png" class="img-button">
+          <label >インボイス</label>
+        </button>
+      </div>
+      <div class="estimation-container ">
+        <div class="estimation-content">
+          <div>確定 合計価格</div>
+          <div>{{ cartStore.state.totalPriceApproved.sub_total_price.toLocaleString() }}円</div>
+        </div>
+        <div class="estimation-content">
+          <div>消費税</div>
+          <div>{{ cartStore.state.totalPriceApproved.tax.toLocaleString()}}円</div>
+        </div>
+        <div class="estimation-content">
+          <div>総合計</div>
+          <div>{{ cartStore.state.totalPriceApproved.total_price.toLocaleString() }}円</div>
+        </div>
+      </div>
     </div>
   </div>
   <h2 class="cart-title">ご注文内容の確認と確定</h2>
   <!-- <div v-if="getPlans().length <= 0" class="cart-empty-container"><p class="empty-explanation">カートに商品が入っていません。地図から見積を検討できます。<a href="javascript:void(0)" @click="goToMap()">見積はここから。</a></p></div> -->
-  <div class="container-scroll">
+  <div class="">
     <div class="" v-for="(planArray,j) in getPlans2d()" :key="j">
 
       <!--　ここはポスティングのための記載 -->
@@ -132,7 +170,23 @@
 
       </div>
 
-     </div>
+    </div>
+    <div class="flex-container">
+      <div class="estimation-container ">
+        <div class="estimation-content">
+          <div>確定 合計価格</div>
+          <div>{{ cartStore.state.totalPriceApproved.sub_total_price.toLocaleString() }}円</div>
+        </div>
+        <div class="estimation-content">
+          <div>消費税</div>
+          <div>{{ cartStore.state.totalPriceApproved.tax.toLocaleString()}}円</div>
+        </div>
+        <div class="estimation-content">
+          <div>総合計</div>
+          <div>{{ cartStore.state.totalPriceApproved.total_price.toLocaleString() }}円</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -167,9 +221,25 @@ export default {
       authStore,
       device,
       isRegistered : false,
+      radioButton : 'credit_card'
     }
   },
+  beforeMount(){
+    for(let i = 0 ; i < cartStore.getters.plan2dArray.length;i++){
+      for(let j = 0 ; j < cartStore.getters.plan2dArray[i].length;j++){
+        if (cartStore.getters.plan2dArray[i][j].extra.authorized){
+          cartStore.commit("updateTotalPriceApproved",cartStore.getters.plan2dArray[i][j].estimation_obj_array)
+        }
+      }
+    }
+  },
+  beforeUnmount(){
+    cartStore.commit("resetTotalPriceApproved")
+  },
   methods:{
+    sumEstimateApproved (val) {
+
+    },
     authorizeStatus(plan){
       return plan.extra.authorized
     },
@@ -206,6 +276,7 @@ export default {
             for(let j = 0 ; j < cartStore.getters.plan2dArray[i].length;j++){
               if (cartStore.getters.plan2dArray[i][j].extra.group_id == groupId){
                 cartStore.getters.plan2dArray[i][j].extra.authorized = 1
+                cartStore.commit("updateTotalPriceApproved",cartStore.getters.plan2dArray[i][j].estimation_obj_array)
               }
             }
           }
@@ -330,15 +401,19 @@ $sec-color: #FFE6C7;
       height: 10px;
     }
 
-  .container-scroll{
-    max-height: 70vh;
-    overflow: auto;
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
+  .title-payment {
+    text-align: left;
+    font-weight: 800;
+    font-size: 16px;
+    margin-bottom: 5px;
+    margin-left: 5px;
   }
 
-  .container-scroll::-webkit-scrollbar { 
-    display: none;  /* Safari and Chrome */
+  .top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 30px;
   }
 
   .note {
@@ -348,7 +423,7 @@ $sec-color: #FFE6C7;
     margin-bottom: 40px;
     margin-left: 50px;
 
-    .title {
+    .title-note {
       font-size: 16px;
       font-weight: 800;
     }
@@ -365,6 +440,7 @@ $sec-color: #FFE6C7;
       margin-top: 20px;
       span {
         margin: auto;
+        
       }
       img {
         position: absolute;
@@ -385,6 +461,65 @@ $sec-color: #FFE6C7;
           color: white;
         }
       }
+    }
+  }
+  .flex-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .button-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .flex-button {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #9f9f9f;
+    padding: 10px 10px;
+    // margin-left: 30px;
+    border-radius: 8px;
+    
+    &:hover {
+      cursor: pointer;
+    }
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-left: 5px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .img-button {
+      width: 20px;
+      margin: 0px 5px;
+    }
+    .form-control:focus-within {
+      color: var(--form-control-color);
+    }
+
+    input[type="radio"] {
+      // accent-color: $base-color;
+      // border: 1px solid $base-color
+    }
+  }
+  .active {
+    @extend .flex-button;
+    border: 2px solid $base-color;
+  }
+  .estimation-container {
+    margin-top: 10px;
+    border: 1px solid #CD0000;
+    padding: 10px 15px;
+    color: #CD0000;
+    width: 340px;
+    .estimation-content {
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      justify-content: space-between;
     }
   }
   .icon-circle{
