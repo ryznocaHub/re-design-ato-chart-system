@@ -329,7 +329,7 @@ export default {
     },
     async onDisclaimerAccepted(){
         this.planToOrder()
-        this.changeStatus(4)
+        this.changeStatus(3)
     },
     onClickOrderConfirm(){
       this.disclaimerDialogStateStore.isVisible = true;
@@ -358,8 +358,8 @@ body{
 
 .ui-row{
   display: flex;
-  position: relative;
   align-items : center;
+  justify-content: flex-end;
   width: 100%;
   height: 100px;
   margin-bottom: 60px;
@@ -367,18 +367,15 @@ body{
 /*  background-color: yellow;*/
 
   .ui-button {
-    display: flex;
-    align-items : center;
-    position: absolute;
     height: $main-button-height;
     width: $main-button-width;
     background-color: $base-color;
     color: white;
     font-weight: 900;
+    margin-left: 20px;
     // border: 1px solid #777777;
     border-radius: 5px;
     font-size: 14px;
-    right: 20px;
     span {
       margin: auto;
     }
