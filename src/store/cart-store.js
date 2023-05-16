@@ -9,9 +9,31 @@ const cartStore = new Vuex.Store({
         onProcessUploadOrder2dArray:[],
       //  onProcessShippingOrderArray:[],
         onProcessShippingOrder2dArray:[],
+        totalPriceApproved : {
+            "sub_total_price" : 0,
+            "tax" : 0,
+            "total_price" : 0
+        },
         cartStatus : 1,
     },
     mutations:{
+        updateTotalPriceApproved (state, val){
+            let x
+            val[0].active ? x=val[0] : x=val[1]
+            console.log("x updateTotalPriceApproved : ",x,state.totalPriceApproved)
+            state.totalPriceApproved = {
+                "sub_total_price" : state.totalPriceApproved.sub_total_price + x.sub_total_price,
+                "tax" : state.totalPriceApproved.tax + x.tax,
+                "total_price" : state.totalPriceApproved.total_price + x.total_price,
+            }
+        },
+        resetTotalPriceApproved(state){
+            state.totalPriceApproved = {
+                "sub_total_price" : 0,
+                "tax" : 0,
+                "total_price" : 0
+            }
+        },
         updatePlanArray(state,planArray){
             state.planArray = planArray;
         },
