@@ -123,7 +123,6 @@ export default {
  //  if(! this.orderStore.getters.orderArray2d || this.orderStore.getters.orderArray2d.length == 0 ) {
    //  this.orderStore.commit("updateOrderArray2d", [])
      const respData2d = await backendApi.refOrderLimitGroupBy(limit)
-     console.log( JSON.stringify(respData2d))
      this.orderStore.commit("updateOrderArray2d", respData2d.value)
    //}
 
@@ -146,8 +145,8 @@ export default {
   methods: {
     resetCondition(){
         document.getElementById('posting_status_selector').value = -1;
-        document.getElementById('print_order_id').innerText = "";
-        document.getElementById('ref_text').innerText = "";
+        document.getElementById('print_order_id').value = "";
+        document.getElementById('ref_text').value = "";
         document.getElementById('from_time').value = "";
         document.getElementById('to_time').value = "";
         this.searchAgain()
@@ -175,8 +174,8 @@ export default {
     async searchAgain(){
 
       const postingStatus = document.getElementById("posting_status_selector").value;
-      const printOrderId  = document.getElementById("print_order_id").innerText;
-      const refText   = document.getElementById("ref_text").innerText;
+      const printOrderId  = document.getElementById("print_order_id").value;
+      const refText   = document.getElementById("ref_text").value;
       let fromTimeStr = "2020/01/01"
       const fromTime   = document.getElementById("from_time").value;
       if (fromTime){
@@ -188,10 +187,8 @@ export default {
       if (toTime){
         toTimeStr  = moment(toTime).format('YYYY/MM/DD');
       }
-
       const respData2d = await backendApi.refOrderLimitGroupBy(limit,Number(postingStatus),printOrderId,refText,fromTimeStr,toTimeStr)
       this.orderStore.commit("updateOrderArray2d", respData2d.value)
-      console.log("respData2d",respData2d)
     },
     async goOrderDetail(id){
       const resp =  await backendApi.refOrderWithIdAndUserId(id)

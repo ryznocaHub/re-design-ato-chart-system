@@ -146,7 +146,6 @@ export default {
     },
     co(){
       var x = this.orderStore.getters.currentOrder
-      console.log("currentorder", x)
       return x
     },
     getSpecification(order){
@@ -245,6 +244,7 @@ export default {
       })
           .then(response => response.json())
           .then(data => {
+            console.log("data",data)
             if(data.result != "success"){
 
               if(document.getElementById("estimation-download-spinner").classList.contains("spinner-border")){
@@ -409,11 +409,12 @@ export default {
     downloadMediaData(){
       document.getElementById("file-download-spinner").classList.add("spinner-border");
       let co = this.co()
+      console.log("co",co)
       const obj = {
-        print_order_id : co.print_order_id
+        order_key : co.order_key
       }
       //  let filename = "media.ai";
-      fetch('https://'  + baseDomain  + '/api/v2/order/file/download',{
+      fetch('https://'  + orikomiDomain  + '/api/v1/order/download_media',{
         method :'POST',
         headers:{
           'Content-Type': 'application/json;charset=UTF-8',
@@ -423,6 +424,7 @@ export default {
       })
           .then(response => response.json())
           .then(data => {
+            console.log("downloadMediaData", data)
             if(data.result != "success"){
 
               if(document.getElementById("file-download-spinner").classList.contains("spinner-border")){

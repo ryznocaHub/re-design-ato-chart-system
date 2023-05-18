@@ -105,25 +105,17 @@ export default {
     }
   },
   async beforeCreate(){
-    console.log('a')
     //カートにおいて、なぜかparsistenceが効かずこれをいれないと動作しないことがあったため、（demo 環境）
     //念のため入れるが、その分、描画までの体感スピードが落ちる解決し次第、homeのみとする
-      const respDataPre = await backendApi.allMenuList()
-    console.log('b')
-
-      allMenuStore.commit("updateAllMenuList",respDataPre.value);
-    console.log('c')
+    const respDataPre = await backendApi.allMenuList()
+    allMenuStore.commit("updateAllMenuList",respDataPre.value);
     showFooter = false
-    console.log('d')
 //    this.orderStore.commit("updateOrderArray",[])
 //    const respData =  await backendApi.refOrderLimit(20)
 //    this.orderStore.commit("updateOrderArray",respData.value)
  //  if(! this.orderStore.getters.orderArray2d || this.orderStore.getters.orderArray2d.length == 0 ) {
    //  this.orderStore.commit("updateOrderArray2d", [])
      const respData2d = await backendApi.refOrderLimitGroupByOrikomi(limit)
-    console.log('e')
-     console.log( JSON.stringify(respData2d))
-    console.log('f')
      this.orderStore.commit("updateOrderArray2d", respData2d.value)
    //}
 
@@ -146,8 +138,8 @@ export default {
   methods: {
     resetCondition(){
         document.getElementById('status_selector').value = -1;
-        document.getElementById('order_key').innerText = "";
-        document.getElementById('ref_text').innerText = "";
+        document.getElementById('order_key').value = "";
+        document.getElementById('ref_text').value = "";
         document.getElementById('from_time').value = "";
         document.getElementById('to_time').value = "";
         this.searchAgain()
@@ -175,8 +167,8 @@ export default {
     async searchAgain(){
 
       const postingStatus = document.getElementById("status_selector").value;
-      const printOrderId  = document.getElementById("order_key").innerText;
-      const refText   = document.getElementById("ref_text").innerText;
+      const printOrderId  = document.getElementById("order_key").value;
+      const refText   = document.getElementById("ref_text").value;
       let fromTimeStr = "2020/01/01"
       const fromTime   = document.getElementById("from_time").value;
       if (fromTime){

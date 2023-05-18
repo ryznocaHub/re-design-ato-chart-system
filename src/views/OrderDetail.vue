@@ -34,13 +34,16 @@
       <div class="items-spinner">
         <div id="file-upload-spinner" class="first-spinner"></div>
         <form>
-          <input type="file" id="file1" @change="uploadMediaData()">
+          <input type="file" id="file1" @change="uploadMediaData()" hidden>
+          <label for="file1">ファイルの選択</label>
         </form>
+        <div v-if="!isFileUploaded" class="error-container">未選択</div>
       </div>
 
       <div class="items-spinner">
         <div id="file-download-spinner" :class="device.mobile ? 'second-spinner-mobile' : 'second-spinner'"></div>
-        <button class="button" @click="downloadMediaData()">確認のためダウンロード</button>
+        <button class="button" @click="downloadMediaData()" :disabled="!isFileUploaded">確認のためダウンロード</button>
+        <div v-if="!isFileUploaded" class="error-container">まだアップロードされていません</div>
       </div>
     </div>
 
@@ -152,7 +155,7 @@ export default {
       allMenuStore,
       authStore,
       device,
-
+      isFileUploaded: false
     }
   },
   async mounted () {
@@ -169,6 +172,7 @@ export default {
       const resp2 = await backendApi.refOrderFileName(this.orderStore.getters.currentOrder.print_order_id)
       if(resp2.value.file_name){
         document.getElementById("file_name").innerText = resp2.value.file_name
+        this.isFileUploaded = true
       }else{
         document.getElementById("file_name").innerText = "未入稿"
       }
@@ -269,6 +273,7 @@ export default {
         })
             .then(response => response.json())
             .then(data => {
+              console.log("data",data)
               if(data.result != "success"){
 
                 if(document.getElementById("estimation-download-spinner").classList.contains("spinner-border")){
@@ -447,6 +452,7 @@ export default {
         })
             .then(response => response.json())
             .then(data => {
+              console.log("確認のためダウンロード", data)
               if(data.result != "success"){
 
                if(document.getElementById("file-download-spinner").classList.contains("spinner-border")){
@@ -513,6 +519,8 @@ export default {
                   console.log(data.result)
 
               if (data.mile_stone == "fin" && data.result == "success"){
+                console.log("data.mile_stone ==")
+                this.isFileUploaded = true
                 document.getElementById("file_name").innerText = file.name;
               }
 
@@ -579,6 +587,8 @@ export default {
               return;
             }
             if (offset >= fileSize) {
+              console.log("offset >= fileSize")
+              this.isFileUploaded = true
               console.log("Done reading file");
               callback('',offset,0);//最後に空を送る
 
@@ -601,7 +611,11 @@ export default {
           }
           block(offset, chunkSize, file);
         }
-
+        if(document.getElementById("file1").value ){
+            console.log("getElementById")
+            this.isFileUploaded = true
+           return
+         }
       },
       async updateTrackingInfo(orderId,destinationId){
         let trackings = [];
@@ -760,6 +774,8 @@ body{
   }
 }
 
+
+
 .content-header {
   background-color: $sec-color;
   padding: 10px 20px;
@@ -793,6 +809,11 @@ body{
       background-color: $sec-color;
       color: $base-color;
     }
+    &:disabled {
+      color: white;
+      background-color: $sec-color;
+      cursor: not-allowed;
+    }
   }
   .text-items-warning{
     color: #CD0000;
@@ -804,22 +825,35 @@ body{
     margin-right: 15px;
     margin-bottom: 10px;
     
-    input[type=file]::file-selector-button {
-        border: none;
-        font-weight: 700;
-        border-radius: 10px;
-        padding: 10px 20px;
-        background-color: $base-color;
-        color: white;;
-        transition: 0.1s;
-      }
-
-      input[type=file]::file-selector-button:hover {
+    label {
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 10px 20px;
+      background-color: $base-color;
+      color: white;
+      transition: 0.1s;
+      &:hover {
         background-color: $sec-color;
         color: $base-color;
-        border: none;
       }
+    }
+    input[type=file]::file-selector-button {
+      border: none;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 10px 20px;
+      background-color: $base-color;
+      color: white;
+      transition: 0.1s;
+    }
+
+    input[type=file]::file-selector-button:hover {
+      background-color: $sec-color;
+      color: $base-color;
+      border: none;
+    }
   }
+  
 }
 .content-items-mobile {
   flex-direction: column;
@@ -898,4 +932,11 @@ body{
   color: $base-color;
   margin-right: 5px;
 }
+
+.error-container {
+    color: #CD0000;
+    font-weight: 600;
+    text-align: right;
+    margin-left: 5px;
+  }
 </style>
