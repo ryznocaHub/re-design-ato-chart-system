@@ -22,10 +22,13 @@
   </body>
   <script>
       let onPostMessage = function ( event ) {
-          //alert('ccc');
 
           let origin = event.origin ;
-          if( origin !== "https://map-ato-customx.107.jp" ) return false ;
+          if( origin == "https://map-ato-customx.107.jp" || origin == "https://orikomi-map.107.jp"){
+
+          }else {
+              return
+          }
 
           let message = event.data.message ;
           if (message === "header_on") {
@@ -33,7 +36,7 @@
               headerTag.style.display = "block";
               let iframeTag = document.getElementById("iframe_header_off");
               iframeTag.id = 'iframe_header_on';
-
+              return
           }
 
           if (message === "header_off") {
@@ -41,29 +44,25 @@
               headerTag.style.display = "none";
               let iframeTag = document.getElementById("iframe_header_on");
               iframeTag.id = 'iframe_header_off';
+              return
           }
 
           if (message === "cart_push") {
-
-
               window.location.href = 'cart';
-
+              return
           }
           if (message === "close_plan_update") {
-
               window.location.href = 'cart';
-
+              return
           }
           if (message === "scroll_reset"){
-              //   alert('abdd');
               window.scrollTo(0, 0);
-
+              return
           }
           if (message === "resize_reset"){
-              //alert('jjjj');
               window.resizeTo(window.screen.width,window.screen.height);
               window.scrollTo(0, 0);
-              // alert('mmmm');
+              return
           }
 
       }

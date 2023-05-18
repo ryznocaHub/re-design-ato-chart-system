@@ -1,13 +1,14 @@
 import { authStore } from "@/store/auth-store";
 import moment from "moment";
 import {momentDateFormat, slashedDateFormat,momentDateTimeFormat,slashedDateTimeFormat} from "../utils/consts";
-import {baseDomain,orikomiDomain} from "../utils/baseConsts";
+import {baseDomain,orikomiDomain,paymentDomain} from "../utils/baseConsts";
 
 export default (function (){
 
     const domain =  baseDomain  // "csv3.107.jp"
     const backendApiDomain = "https://" + domain + "/api"
     const orikomiApiDomain = "https://" + orikomiDomain + "/api"
+    const paymentApiDomain = "https://" + paymentDomain + "/api"
 
     const backendWebSocketDomain = domain + ":9001"
 
@@ -18,6 +19,10 @@ export default (function (){
 
     const fetchCoreOrikomi = async (subPath, reqBody, outputObj = false, outputJson=true, cancelToken=false) => {
         return fetchCore(orikomiApiDomain, subPath, reqBody, outputObj, outputJson, cancelToken)
+    }
+
+    const fetchCorePayment =  async (subPath, reqBody, outputObj = false, outputJson=true, cancelToken=false) => {
+        return fetchCore(paymentApiDomain, subPath, reqBody, outputObj, outputJson, cancelToken)
     }
 
     const fetchCore = async (domain, subPath, reqBody, outputObj = false, outputJson=true, cancelToken=false) => {
@@ -307,6 +312,35 @@ export default (function (){
 
     }
 
+    /* Payment relation */
+
+    const payment = async (val) => {
+        const obj = { amount : val}
+        return fetchCorePayment("/v1/payment",obj)
+    }
+
+    const cancelPayment = async () => {
+        const obj = {
+            access_id: "d2834c3b1996353cca1e444dae959ad3",
+            access_pass: "46ac32d4d174dbaceea9c33d2bca08e8"
+        }
+        return fetchCorePayment("/v1/cancel_payment",obj)
+    }
+
+    const getRegisterLink =  async () => {
+        return fetchCorePayment("/v1/card_link_to_register")
+    }
+    const registeredCheck =  async () => {
+
+        let account = await myAccountInfo()
+
+        let mail = account.value.user_id
+        const obj = {
+            user_id : mail
+        }
+        return fetchCorePayment("/v1/check_registration",obj)
+    }
+
 
 
     return {
@@ -342,6 +376,11 @@ export default (function (){
         authorizePlansOrikomi,
         uploadOrderFileOrikomi,
         refOrderOrikomi,
+
+        getRegisterLink,
+        registeredCheck,
+        payment,
+        cancelPayment
     }
 
 }())
