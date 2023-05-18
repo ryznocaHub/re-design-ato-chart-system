@@ -557,7 +557,6 @@ $sec-color: #FFE6C7;
 
   .cart-container{
     margin-left : 30px;
-    display:flex;
   }
   .cart-content {
     text-align: left;

@@ -27,8 +27,8 @@
           </select>
         </div>
         <div :class="device.mobile ? 'cell-wide' : 'cell'" class="button-container">
-          <span @click="cancelAddBtn()" class="icon red"><BIconX  /></span>
-          <span @click="addSaveBtn()" class="icon green"><BIconCheck2  /></span>
+          <span @click="cancelAddBtn()" class="icon red"><BIconX /></span>
+          <span @click="addSaveBtn()" class="icon green"><BIconCheck2 /></span>
         </div>
       </div>
       
@@ -168,7 +168,7 @@ export default {
     },
     async addSaveBtn(){
       let saveAccountData = {}
-      saveAccountData.site_id = accountStore.getters.accountList[0].site_id
+     // saveAccountData.site_id = accountStore.getters.accountList[0].site_id
       saveAccountData.company_id = accountStore.getters.accountList[0].company_id
       const newUserId =  document.getElementById("user-id-add").innerText
       saveAccountData.user_id = newUserId
@@ -194,6 +194,7 @@ export default {
       }
 
       this.initStatus()
+
       if(respData.result === "success"){
         this.genericAlertOpen("アカウントの追加","初期パスワードは:  " + respData.value + " " + "に設定されました。（一度しか表示されません。）" )
       }else{

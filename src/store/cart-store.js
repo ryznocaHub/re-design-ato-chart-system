@@ -15,8 +15,12 @@ const cartStore = new Vuex.Store({
             "total_price" : 0
         },
         cartStatus : 1,
+        paymentMethod: 'credit_card'
     },
     mutations:{
+        updatePaymentMethod (state,paymentMehod_){
+          state.paymentMethod = paymentMehod_
+        },
         updateTotalPriceApproved (state, val){
             let x
             val[0].active ? x=val[0] : x=val[1]
@@ -25,6 +29,15 @@ const cartStore = new Vuex.Store({
                 "sub_total_price" : state.totalPriceApproved.sub_total_price + x.sub_total_price,
                 "tax" : state.totalPriceApproved.tax + x.tax,
                 "total_price" : state.totalPriceApproved.total_price + x.total_price,
+            }
+        },
+        updateTotalPriceApprovedOrikomi (state, val){
+            let x = val
+            console.log("x updateTotalPriceApproved : ",x,state.totalPriceApproved)
+            state.totalPriceApproved = {
+                "sub_total_price" : state.totalPriceApproved.sub_total_price + x.total_price,
+                "tax" : state.totalPriceApproved.tax + x.tax,
+                "total_price" : state.totalPriceApproved.total_price + x.total_price + x.tax,
             }
         },
         resetTotalPriceApproved(state){

@@ -14,9 +14,10 @@
       <button v-if="currentStatus()==1" :class="device.mobile? 'ui-back-button-mobile': 'ui-back-button'" @click="changeStatus(0)"><span>地図で註文を続ける</span></button>
       <button v-if="currentStatus()==1" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="changeStatus(2)" :disabled="isDisabled()"><span>お支払い方法確認へ進む</span></button>
       <button v-if="currentStatus()==2" :class="device.mobile? 'ui-back-button-mobile': 'ui-back-button'" @click="changeStatus(1)"><span>戻る</span></button>
-      <button v-if="currentStatus()==2" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="onClickOrderConfirm()" :disabled="isDisabled()"><span>次に進む</span></button>
+      <button v-if="currentStatus()==2" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="onClickOrderConfirm()" ><span>注文の確定</span></button>
+      <!-- <button v-if="currentStatus()==2" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="onClickOrderConfirm()" :disabled="isDisabled()"><span>注文の確定</span></button> -->
       <button v-if="currentStatus()==3" :class="device.mobile? 'ui-back-button-mobile': 'ui-back-button'" @click="changeStatus(2)"><span>戻る</span></button>
-      <button v-if="currentStatus()==3" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="changeStatus(4)" :disabled="isDisabled()"><span>注文の確定</span></button>
+      <button v-if="currentStatus()==3" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="changeStatus(4)" :disabled="isDisabled()"><span>次に進む</span></button>
       <button v-if="currentStatus()==4" :class="device.mobile? 'ui-back-button-mobile': 'ui-back-button'" @click="changeStatus(3)"><span>戻る</span></button>
       <button v-if="currentStatus()==4" :class="device.mobile? 'ui-button-mobile': 'ui-button'" @click="changeStatus(5)"><span>次に進む</span></button>
       <button v-if="currentStatus()==5" :class="device.mobile? 'ui-back-button-mobile': 'ui-back-button'" @click="changeStatus(4)"><span>戻る</span></button>
@@ -256,14 +257,14 @@ export default {
       }
 
 
-      if(this.currentStatus() == 3){
+      if(this.currentStatus() == 2){
         for(let i = 0 ; i < this.cartStore.state.plan2dArray.length;i++){
           if ( this.cartStore.state.plan2dArray[i][0].extra.authorized){
              return false
           }
         }
-        return true;
-      }
+          return true;
+        }
       return false;
 
       //return this.cartStore.getters.cartCount == 0
@@ -330,6 +331,10 @@ export default {
     async onDisclaimerAccepted(){
         this.planToOrder()
         this.changeStatus(3)
+       if (cartStore.state.paymentMethod == 'credit_card'){
+         backendApi.payment(cartStore.state.totalPriceApproved.total_price)
+       }
+
     },
     onClickOrderConfirm(){
       this.disclaimerDialogStateStore.isVisible = true;

@@ -4,27 +4,25 @@
       <div class="title-note">メモ:</div>
       <div>お支払いの前に、お客様の情報が正しいかどうかご確認ください。</div>
       <div >
-        <div>クレジットカードの登録がまだのようですが、こちらから登録してください。</div>
-        <button class="button-register" @click="isRegistered = true">カード登録はこちらから</button>
+        <div>クレジットカードの登録がまだの場合は、こちらから登録してください。</div>
+        <button class="button-register" @click="moveToCardRegisterPage()">ここからカード登録と編集</button>
       </div>
     </div>
     <div class="note" v-else>
       <div class="title-note">メモ:</div>
-      <div>お支払いの前に、お客様の情報が正しいかどうかご確認ください。</div>
       <div >
-        <div>375987000000088 (AMEX)</div>
-        <button class="button-register" @click="isRegistered = false">カード編集はこちらから</button>
+        <button class="button-register" @click="moveToCardRegisterPage()">カード編集はこちらから</button>
       </div>
     </div>
     
     <div>
-      <div class="title-payment">支払方法:</div>
+      <div class="title-payment">規約:</div>
       <div class="button-container">
-        <button class="flex-button" :class="[radioButton == 'credit_card' ? 'active' : null ]" @click="() => radioButton = 'credit_card'">
+        <button class="flex-button" :class="[radioButton == 'credit_card' ? 'active' : null ]" @click="changePaymentMethod('credit_card')">
           <img src="../assets/img/creditCard.png" class="img-button">
           <label >クレジットカード</label>
         </button>
-        <button class="flex-button" :class="[radioButton == 'invoice' ? 'active' : null ]" @click="() => radioButton = 'invoice'">
+        <button class="flex-button" :class="[radioButton == 'invoice' ? 'active' : null ]" @click="changePaymentMethod('invoice')">
           <img src="../assets/img/invoice.png" class="img-button">
           <label >インボイス</label>
         </button>
@@ -160,8 +158,8 @@
                 <div class="space"></div>
                 <p>※<span class="font-weight-bold">入稿期限日時:納品予定日:</span> 等のスケジュールが遅れた場合、ご希望の配布完了日に配布が完了しない場合があります。</p>
                 <p v-for="(irregular,i) in plan.extra.irregular_messages" :key="i" >{{irregular}}</p>
-                <p>※ポスト数は常に変動する為、ポスト数が減少した場合 は対象エリア近隣にポスティングいたします。</p>
-                <p>※天災・天候不良により予定通り配布完了できない場合、ポスティング実施数での精算または期間延長しての配布をさせていただききます。</p>
+            <!--    <p>※ポスト数は常に変動する為、ポスト数が減少した場合 は対象エリア近隣にポスティングいたします。</p>
+                <p>※天災・天候不良により予定通り配布完了できない場合、ポスティング実施数での精算または期間延長しての配布をさせていただききます。</p>   -->
               </div>
             </div>
           </details>
@@ -228,7 +226,13 @@ export default {
     for(let i = 0 ; i < cartStore.getters.plan2dArray.length;i++){
       for(let j = 0 ; j < cartStore.getters.plan2dArray[i].length;j++){
         if (cartStore.getters.plan2dArray[i][j].extra.authorized){
-          cartStore.commit("updateTotalPriceApproved",cartStore.getters.plan2dArray[i][j].estimation_obj_array)
+          const dataType = cartStore.getters.plan2dArray[i][j].data_type;
+          if (dataType == "posting") {
+            cartStore.commit("updateTotalPriceApproved",cartStore.getters.plan2dArray[i][j].estimation_obj_array)
+          }else if (dataType == "orikomi"){
+            cartStore.commit("updateTotalPriceApprovedOrikomi",cartStore.getters.plan2dArray[i][j].estimation)
+          }
+
         }
       }
     }
@@ -239,6 +243,10 @@ export default {
   methods:{
     sumEstimateApproved (val) {
 
+    },
+    changePaymentMethod(val){
+      this.radioButton = val
+      cartStore.commit("updatePaymentMethod",val)
     },
     authorizeStatus(plan){
       return plan.extra.authorized
@@ -271,10 +279,13 @@ export default {
     },
     async authorizePlans(groupId){
        const respData = await backendApi.authorizePlans(groupId)
+       console.log("authorizePlans(groupId)", respData)
        if(respData.result == "success"){
+        console.log("success")
           for(let i = 0 ; i < cartStore.getters.plan2dArray.length;i++){
             for(let j = 0 ; j < cartStore.getters.plan2dArray[i].length;j++){
               if (cartStore.getters.plan2dArray[i][j].extra.group_id == groupId){
+                console.log("authorizePlans true")
                 cartStore.getters.plan2dArray[i][j].extra.authorized = 1
                 cartStore.commit("updateTotalPriceApproved",cartStore.getters.plan2dArray[i][j].estimation_obj_array)
               }
@@ -387,6 +398,28 @@ export default {
         preSpecification = preSpecification + "&nbsp;&nbsp; / 参照テキスト:" + plan.extra.ref_text
       }
       return preSpecification
+    },
+    async moveToCardRegisterPage() {
+      let registerLink = await backendApi.getRegisterLink()
+      window.open( registerLink.value.link );
+    },
+    getIsRegistered(){
+      return this.isRegistered
+    },
+    async registeredCheck(){
+      let checkInfo = await backendApi.registeredCheck()
+      if(checkInfo.value.error_message == "card not found"){
+        return
+      }
+      if(checkInfo.value.active){
+        this.isRegistered = true
+      }
+    },
+    async payment(){
+      let paymentResult = await backendApi.payment()
+    },
+    async cancelPayment(){
+      let cancelPaymentResult = await backendApi.cancelPayment()
     },
   }
 }
